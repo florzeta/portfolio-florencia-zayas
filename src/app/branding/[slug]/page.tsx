@@ -12,6 +12,9 @@ export async function generateStaticParams() {
   return brandingLibrary.map((item) => ({ slug: item.slug }));
 }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateMetadata({
   params,
 }: BrandingPageProps): Promise<Metadata> {
@@ -34,11 +37,14 @@ export async function generateMetadata({
 }
 
 export default function BrandingDetailPage({ params }: BrandingPageProps) {
+  // Debug: ensure route executes and slug is resolved
+  console.log("[branding-detail] slug param:", params?.slug);
+
   const item = brandingLibrary.find((b) => b.slug === params.slug);
   if (!item) notFound();
 
   return (
-    <div className="pb-16 pt-10 md:pt-12">
+    <div className="pb-16 pt-10 md:pt-12" data-debug="branding-slug-route">
       <Container className="space-y-10">
         <header className="space-y-3 rounded-3xl border border-[#24364d] bg-[--color-surface] p-6 shadow-lg">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted">
