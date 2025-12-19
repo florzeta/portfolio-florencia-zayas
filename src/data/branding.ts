@@ -1,4 +1,11 @@
 // Branding = visual library (identidad, paletas, piezas). No son case studies completos.
+// Estructura de assets (bajo /public/projects/branding/<slug>/):
+// - /hero: imágenes hero del kit
+// - /brand: logos, moodboards, icon sets, paletas
+// - /social: feeds o stories de Instagram
+// - /packaging: renders/mockups de packaging o merch
+// - /ui: piezas de UI si aplica
+// - thumbnail.png en la raíz del slug
 export type BrandingIndustry = "Cafe" | "Fitness" | "Ecommerce" | "Beauty" | "Plants" | "Education";
 
 export type BrandingItem = {
@@ -29,13 +36,13 @@ export const brandingLibrary: BrandingItem[] = [
     summary: "Identidad cálida y sistematizada para feed y packaging reusable.",
     services: ["Branding", "Packaging", "Instagram System"],
     assets: {
-      logos: ["/projects/branding/wave-cafe/logo.png"],
-      palette: ["/projects/branding/wave-cafe/moodboard.png"],
+      logos: ["/projects/branding/wave-cafe/brand/logo.png"],
+      palette: ["/projects/branding/wave-cafe/brand/moodboard.png"],
       mockups: [
-        "/projects/branding/wave-cafe/packaging-1.png",
-        "/projects/branding/wave-cafe/packaging-2.png",
+        "/projects/branding/wave-cafe/packaging/packaging-1.png",
+        "/projects/branding/wave-cafe/packaging/packaging-2.png",
       ],
-      instagram: ["/projects/branding/wave-cafe/instagram.png"],
+      instagram: ["/projects/branding/wave-cafe/social/instagram.png"],
     },
   },
   {
@@ -48,13 +55,13 @@ export const brandingLibrary: BrandingItem[] = [
     summary: "Sistema visual energético para clases híbridas y merch.",
     services: ["Branding", "Landing Kit", "Instagram System"],
     assets: {
-      logos: ["/projects/branding/glow-fit-studio/logo.png"],
-      palette: ["/projects/branding/glow-fit-studio/moodboard.png"],
+      logos: ["/projects/branding/glow-fit-studio/brand/logo.png"],
+      palette: ["/projects/branding/glow-fit-studio/brand/moodboard.png"],
       mockups: [
-        "/projects/branding/glow-fit-studio/packaging-1.png",
-        "/projects/branding/glow-fit-studio/packaging-2.png",
+        "/projects/branding/glow-fit-studio/packaging/packaging-1.png",
+        "/projects/branding/glow-fit-studio/packaging/packaging-2.png",
       ],
-      instagram: ["/projects/branding/glow-fit-studio/instagram.png"],
+      instagram: ["/projects/branding/glow-fit-studio/social/instagram.png"],
     },
   },
   {
@@ -67,13 +74,13 @@ export const brandingLibrary: BrandingItem[] = [
     summary: "Identidad modular para catálogo vintage y lanzamientos semanales.",
     services: ["Branding", "Catálogo", "Instagram System"],
     assets: {
-      logos: ["/projects/branding/retro-shop/logo.png"],
-      palette: ["/projects/branding/retro-shop/moodboard.png"],
+      logos: ["/projects/branding/retro-shop/brand/logo.png"],
+      palette: ["/projects/branding/retro-shop/brand/moodboard.png"],
       mockups: [
-        "/projects/branding/retro-shop/packaging-1.png",
-        "/projects/branding/retro-shop/packaging-2.png",
+        "/projects/branding/retro-shop/packaging/packaging-1.png",
+        "/projects/branding/retro-shop/packaging/packaging-2.png",
       ],
-      instagram: ["/projects/branding/retro-shop/instagram.png"],
+      instagram: ["/projects/branding/retro-shop/social/instagram.png"],
     },
   },
 ];

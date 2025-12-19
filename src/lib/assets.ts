@@ -1,4 +1,7 @@
 import { Project } from "@/types/content";
+import { BrandingItem } from "@/data/branding";
+import fs from "node:fs";
+import path from "node:path";
 
 const versionPattern = /-v\d+(?=\.[a-zA-Z0-9]+$)/;
 
@@ -31,6 +34,36 @@ export function assertNoUnversionedProjectAssets(project: Project): void {
 
   if (warnings.length > 0) {
     console.warn("[assets] Usa nombres versionados (-vN):", warnings.join(" | "));
+  }
+}
+
+export function warnMissingBrandingAssets(kit: BrandingItem): void {
+  if (process.env.NODE_ENV !== "development") return;
+
+  const missing: string[] = [];
+  const basePublic = path.resolve(process.cwd(), "public");
+
+  const collect = (src?: string | null) => {
+    if (!src || typeof src !== "string") return;
+    if (!src.startsWith("/")) return;
+    const full = path.join(basePublic, src.slice(1));
+    if (!fs.existsSync(full)) missing.push(`${src} (expected at ${full})`);
+  };
+
+  collect(kit.thumbnail);
+  const assets = kit.assets ?? {};
+  assets.logos?.forEach(collect);
+  assets.palette?.forEach(collect);
+  assets.mockups?.forEach(collect);
+  assets.instagram?.forEach(collect);
+  if ("iconSet" in assets && assets.iconSet) {
+    collect((assets as { iconSet: string }).iconSet);
+  }
+  const packaging = (assets as { packaging?: string[] }).packaging ?? [];
+  packaging.forEach(collect);
+
+  if (missing.length > 0) {
+    console.warn(`[branding-assets] Faltan archivos para ${kit.slug}:`, missing.join(" | "));
   }
 }
 

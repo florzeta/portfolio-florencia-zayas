@@ -1,5 +1,6 @@
 import { Container } from "@/components/layout/Container";
 import { brandingLibrary } from "@/data/branding";
+import { warnMissingBrandingAssets } from "@/lib/assets";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -42,6 +43,7 @@ export default function BrandingDetailPage({ params }: BrandingPageProps) {
 
   const item = brandingLibrary.find((b) => b.slug === params.slug);
   if (!item) notFound();
+  warnMissingBrandingAssets(item);
 
   return (
     <div className="pb-16 pt-10 md:pt-12" data-debug="branding-slug-route">
