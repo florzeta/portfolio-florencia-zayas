@@ -1,0 +1,27 @@
+<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flujo de recargas">
+  <defs>
+    <linearGradient id="rf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f9a8d4" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#141e2a" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="#0f1823"/>
+  <rect x="150" y="140" width="180" height="260" rx="22" fill="#1c2a3b" stroke="#2e415a"/>
+  <rect x="390" y="140" width="180" height="260" rx="22" fill="#1c2a3b" stroke="#2e415a"/>
+  <rect x="630" y="140" width="180" height="260" rx="22" fill="url(#rf)"/>
+  <rect x="175" y="175" width="130" height="24" rx="8" fill="#24364d"/>
+  <rect x="175" y="215" width="130" height="24" rx="8" fill="#24364d"/>
+  <rect x="175" y="255" width="130" height="24" rx="8" fill="#24364d"/>
+  <rect x="175" y="325" width="130" height="42" rx="12" fill="#f9a8d4" opacity="0.85"/>
+  <rect x="415" y="175" width="130" height="24" rx="8" fill="#24364d"/>
+  <rect x="415" y="215" width="130" height="24" rx="8" fill="#24364d"/>
+  <rect x="415" y="255" width="130" height="24" rx="8" fill="#24364d"/>
+  <rect x="415" y="325" width="130" height="42" rx="12" fill="#24364d"/>
+  <rect x="655" y="190" width="130" height="64" rx="14" fill="#1c2a3b" stroke="#2e415a"/>
+  <rect x="655" y="280" width="130" height="64" rx="14" fill="#1c2a3b" stroke="#2e415a"/>
+  <path d="M330 270 L370 270" stroke="#f9a8d4" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 8"/>
+  <path d="M570 270 L610 270" stroke="#f9a8d4" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 8"/>
+  <circle cx="330" cy="270" r="8" fill="#f9a8d4"/>
+  <circle cx="570" cy="270" r="8" fill="#f9a8d4"/>
+</svg>
+
