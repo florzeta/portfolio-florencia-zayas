@@ -1,13 +1,9 @@
 import { Container } from "@/components/layout/Container";
 import { brandingLibrary } from "@/data/branding";
-import { warnMissingBrandingAssets } from "@/lib/assets";
+import { filterBrandingAssets } from "@/lib/assets.client";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-
-type BrandingPageProps = {
-  params: { slug: string };
-};
 
 export async function generateStaticParams() {
   return brandingLibrary.map((item) => ({ slug: item.slug }));
@@ -18,8 +14,11 @@ export const revalidate = 0;
 
 export async function generateMetadata({
   params,
-}: BrandingPageProps): Promise<Metadata> {
-  const item = brandingLibrary.find((b) => b.slug === params.slug);
+}: {
+  params: Promise<{ slug: string }> | { slug: string };
+}): Promise<Metadata> {
+  const resolvedParams = await Promise.resolve(params);
+  const item = brandingLibrary.find((b) => b.slug === resolvedParams.slug);
   if (!item) return { title: "Branding no encontrado" };
 
   return {
@@ -37,16 +36,22 @@ export async function generateMetadata({
   };
 }
 
-export default function BrandingDetailPage({ params }: BrandingPageProps) {
-  // Debug: ensure route executes and slug is resolved
-  console.log("[branding-detail] slug param:", params?.slug);
-
-  const item = brandingLibrary.find((b) => b.slug === params.slug);
+export default async function BrandingDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }> | { slug: string };
+}) {
+  const resolvedParams = await Promise.resolve(params);
+  const item = brandingLibrary.find((b) => b.slug === resolvedParams.slug);
   if (!item) notFound();
-  warnMissingBrandingAssets(item);
+
+  const logos = filterBrandingAssets(item.assets.logos);
+  const palette = filterBrandingAssets(item.assets.palette);
+  const mockups = filterBrandingAssets(item.assets.mockups);
+  const instagram = filterBrandingAssets(item.assets.instagram);
 
   return (
-    <div className="pb-16 pt-10 md:pt-12" data-debug="branding-slug-route">
+    <div className="pb-16 pt-10 md:pt-12">
       <Container className="space-y-10">
         <header className="space-y-3 rounded-3xl border border-[#24364d] bg-[--color-surface] p-6 shadow-lg">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted">
@@ -84,17 +89,11 @@ export default function BrandingDetailPage({ params }: BrandingPageProps) {
           </div>
         </section>
 
-        {item.assets.logos && item.assets.logos.length > 0 ? (
-          <AssetSection title="Logos" images={item.assets.logos} />
-        ) : null}
-        {item.assets.palette && item.assets.palette.length > 0 ? (
-          <AssetSection title="Paleta de color" images={item.assets.palette} />
-        ) : null}
-        {item.assets.mockups && item.assets.mockups.length > 0 ? (
-          <AssetSection title="Mockups" images={item.assets.mockups} />
-        ) : null}
-        {item.assets.instagram && item.assets.instagram.length > 0 ? (
-          <AssetSection title="Instagram" images={item.assets.instagram} dense />
+        {logos.length > 0 ? <AssetSection title="Logos" images={logos} /> : null}
+        {palette.length > 0 ? <AssetSection title="Paleta de color" images={palette} /> : null}
+        {mockups.length > 0 ? <AssetSection title="Mockups" images={mockups} /> : null}
+        {instagram.length > 0 ? (
+          <AssetSection title="Instagram" images={instagram} dense />
         ) : null}
       </Container>
     </div>

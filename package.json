@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "validate:assets": "node scripts/validate-assets.mjs",
-    "check:assets": "node scripts/check-assets.mjs"
+    "check:assets": "node scripts/check-assets.mjs",
+    "fix:wave-cafe-assets": "node tools/fix-wave-cafe-assets.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

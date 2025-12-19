@@ -5,4 +5,5 @@
 - Transiciones entre páginas y layout compartido: `src/app/template.tsx` con `AnimatePresence + LayoutGroup` permite el fade/slide global y reutiliza `layoutId` entre `ProjectCard` y `ProjectHero`.
 - Datos tipados: los modelos viven en `src/types/content.ts` y los seeds en `src/data/*`, así las páginas se mantienen server-friendly y fáciles de traducir/expandir.
 - JSON-LD: Persona en home y CreativeWork por proyecto en detalle para mejorar SEO sin depender de librerías extra.
+- Node built-ins: evitar `fs/path` en helpers de assets; si se necesitan, usarlos solo en scripts o helpers estrictamente server, pero los componentes cliente deben consumir solo utilidades string-safe.
 

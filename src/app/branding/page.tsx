@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/Container";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Chip } from "@/components/ui/Chip";
 import { brandingLibrary } from "@/data/branding";
+import { resolveBrandingThumbnail } from "@/lib/assets.client";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -41,11 +42,16 @@ export default function BrandingPage() {
   };
 
   const items = useMemo(() => {
-    return brandingLibrary.filter((item) => {
-      if (onlyFeatured && !item.featured) return false;
-      if (industry !== "Todos" && item.industry !== industry) return false;
-      return true;
-    });
+    return brandingLibrary
+      .filter((item) => {
+        if (onlyFeatured && !item.featured) return false;
+        if (industry !== "Todos" && item.industry !== industry) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        if (a.featured !== b.featured) return a.featured ? -1 : 1;
+        return a.title.localeCompare(b.title);
+      });
   }, [industry, onlyFeatured]);
 
   return (
@@ -91,7 +97,7 @@ export default function BrandingPage() {
             >
               <div className="relative h-52 w-full overflow-hidden bg-[--color-soft]">
                 <Image
-                  src={item.thumbnail}
+                  src={resolveBrandingThumbnail(item)}
                   alt={item.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 400px"

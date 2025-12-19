@@ -5,7 +5,7 @@ import { ProjectMediaGallery } from "@/components/ProjectMediaGallery";
 import { ProjectToc } from "@/components/ProjectToc";
 import { ButtonLink } from "@/components/ui/Button";
 import { projects } from "@/data/projects";
-import { assertNoUnversionedProjectAssets } from "@/lib/assets";
+import { assertNoUnversionedProjectAssets } from "@/lib/assets.server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";

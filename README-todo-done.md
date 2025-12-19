@@ -11,4 +11,5 @@
 - [x] Componentes comunes (Header, botones, reveal, cards) y animaciones sutiles.
 - [x] Páginas completas: home, índice/detalle de proyectos, sobre mí y contacto.
 - [x] Metadata por página + JSON-LD (Persona y CreativeWork) y CTA de CV.
+- [x] Evitar `fs/path` en helpers de assets; validación de existencia eliminada para compatibilidad con bundle cliente.
 
