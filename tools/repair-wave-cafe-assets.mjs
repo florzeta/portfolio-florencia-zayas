@@ -1,5 +1,12 @@
 /**
- * Audit outputs (before/after) will be pasted here after running the script.
+ * Audit snapshot
+ * Before:
+ * - All expected assets MISSING; candidates included logo.png.png, moodboard.png.png,
+ *   packaging-1/2.png.png, instagram feed file, root thumbnail.png
+ * After:
+ * - Present: hero/thumbnail.png (png), brand/logo.png (png), brand/moodboard.png (png),
+ *   packaging/packaging-1.png (png), packaging/packaging-2.png (png)
+ * - Missing: instagram/instagram.png (still missing; candidate wave-cafe-instagram-feed-grid-v1.png.png)
  */
 
 import { promises as fs } from "node:fs";
@@ -193,7 +200,7 @@ async function normalizeInstagram() {
   const instaFiles = await fs.readdir(instaDir);
   for (const name of instaFiles) {
     const lower = name.toLowerCase();
-    if (!lower.startsWith("instagram")) continue;
+    if (!lower.startsWith("instagram") && !lower.includes("instagram")) continue;
     const src = path.join(instaDir, name);
     if (path.normalize(src) === path.normalize(expected.instagram)) continue;
     await renameIfPresent(src, expected.instagram, "instagram");
