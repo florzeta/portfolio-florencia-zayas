@@ -7,15 +7,26 @@ const publicDir = path.resolve("public");
 
 function loadData(filePath, exportName) {
   const raw = fs.readFileSync(filePath, "utf8");
-  const match = raw.match(
+  const primary = raw.match(
     new RegExp(`export const ${exportName}[^=]*=\\s*(\\[[\\s\\S]*?\\]);`),
   );
-  if (!match) {
-    throw new Error(`Cannot parse export ${exportName} in ${filePath}`);
+  if (primary) {
+    const code = primary[1];
+    const fn = new Function(`return (${code});`);
+    return fn();
   }
-  const code = match[1];
-  const fn = new Function(`return (${code});`);
-  return fn();
+
+  // Fallback: allow intermediate raw* constant mapped into export (e.g., rawBrandingLibrary -> brandingLibrary)
+  const rawMatch = raw.match(
+    /const\s+rawBrandingLibrary[^=]*=\s*(\[[\s\S]*?\]);/m,
+  );
+  if (exportName === "brandingLibrary" && rawMatch) {
+    const code = rawMatch[1];
+    const fn = new Function(`return (${code});`);
+    return fn();
+  }
+
+  throw new Error(`Cannot parse export ${exportName} in ${filePath}`);
 }
 
 function collectProjectAssets(projects) {

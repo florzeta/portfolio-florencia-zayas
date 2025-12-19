@@ -187,10 +187,30 @@ async function normalizePackaging() {
     const lower = name.toLowerCase();
     if (lower.startsWith("packaging-1")) {
       const src = path.join(pkgDir, name);
+       if (path.normalize(src) === path.normalize(expected.packaging1)) continue;
       await renameIfPresent(src, expected.packaging1, "packaging-1");
     } else if (lower.startsWith("packaging-2")) {
       const src = path.join(pkgDir, name);
+       if (path.normalize(src) === path.normalize(expected.packaging2)) continue;
       await renameIfPresent(src, expected.packaging2, "packaging-2");
+    }
+  }
+
+  // If still missing, attempt to restore from legacy
+  if (!(await fileExists(expected.packaging1))) {
+    const legacyFiles = await fs.readdir(LEGACY);
+    const candidate = legacyFiles.find((n) => n.toLowerCase().includes("packaging-1"));
+    if (candidate) {
+      const src = path.join(LEGACY, candidate);
+      await renameIfPresent(src, expected.packaging1, "packaging-1-restore");
+    }
+  }
+  if (!(await fileExists(expected.packaging2))) {
+    const legacyFiles = await fs.readdir(LEGACY);
+    const candidate = legacyFiles.find((n) => n.toLowerCase().includes("packaging-2"));
+    if (candidate) {
+      const src = path.join(LEGACY, candidate);
+      await renameIfPresent(src, expected.packaging2, "packaging-2-restore");
     }
   }
 }
