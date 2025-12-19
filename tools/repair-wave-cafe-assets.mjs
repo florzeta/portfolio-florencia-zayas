@@ -1,12 +1,22 @@
 /**
- * Audit snapshot
- * Before:
- * - All expected assets MISSING; candidates included logo.png.png, moodboard.png.png,
- *   packaging-1/2.png.png, instagram feed file, root thumbnail.png
- * After:
- * - Present: hero/thumbnail.png (png), brand/logo.png (png), brand/moodboard.png (png),
- *   packaging/packaging-1.png (png), packaging/packaging-2.png (png)
- * - Missing: instagram/instagram.png (still missing; candidate wave-cafe-instagram-feed-grid-v1.png.png)
+ * Audit snapshot (tools/audit-wave-cafe-assets.mjs)
+ * Before repair:
+ * - hero/thumbnail.png: size=1865912 | png
+ * - brand/logo.png: size=1433293 | png
+ * - brand/moodboard.png: size=2337293 | png
+ * - packaging/packaging-1.png: MISSING
+ * - packaging/packaging-2.png: MISSING
+ * - instagram/instagram.png: size=2075183 | png
+ * - Candidates: legacy packaging-1/2, packaging-3.png.png, wave-cafe-packaging-kit.png, root thumbnail/svg
+ *
+ * After repair:
+ * - hero/thumbnail.png: size=1865912 | png
+ * - brand/logo.png: size=1433293 | png
+ * - brand/moodboard.png: size=2337293 | png
+ * - packaging/packaging-1.png: size=1905098 | png
+ * - packaging/packaging-2.png: size=1871906 | png
+ * - instagram/instagram.png: size=2075183 | png
+ * - Extras left: packaging-3.png.png, wave-cafe-packaging-kit.png, legacy thumbnail svg
  */
 
 import { promises as fs } from "node:fs";
