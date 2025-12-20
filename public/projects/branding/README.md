@@ -34,3 +34,4 @@ public/
 5) Ejecutá `npm run check:assets` para validar que las rutas existan.
 
 
+

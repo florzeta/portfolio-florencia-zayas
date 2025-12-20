@@ -42,6 +42,6 @@ Sitio personal en Next.js (App Router) con tema oscuro, animaciones sutiles y fo
 - Si reemplazás una imagen estática con el mismo nombre, Next/Image y el navegador pueden servir la versión cacheada. Versioná el nombre (ej.: `hero--v03.png`) y actualizá la ruta en `src/data/` para asegurar la invalicación.
 
 ## Convenciones de assets
-- Carpetas: `/public/projects/<slug>/{hero,brand,instagram,packaging}`.
+- Carpetas: `/public/projects/<slug>/{hero,brand,instagram,packaging|merch}`.
 - Naming: `<project>-<asset>-<descriptor>-v<n>.<ext>` (ej.: `wave-cafe-hero-especialidad-nunez-v03.png`).
 - Regla: nunca reemplazar un archivo con el mismo nombre; si cambia la imagen, subí un archivo con versión nueva y actualizá la referencia en `src/data/`.
