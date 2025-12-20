@@ -23,8 +23,8 @@ export function resolveBrandingThumbnail(kit: BrandingItem): string {
   const assets = kit.assets ?? {};
   const candidates = [
     kit.thumbnail,
-    assets.mockups?.[0],
     assets.instagram?.[0],
+    assets.mockups?.[0],
     assets.logos?.[0],
     assets.palette?.[0],
     "/next.svg",
