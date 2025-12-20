@@ -1,8 +1,8 @@
 // Branding = visual library (identidad, paletas, piezas). No son case studies completos.
-// Para agregar un kit: (1) crear carpeta /public/projects/branding/<slug>/ con subcarpetas /hero, /brand, /instagram, /packaging o /merch (opcional), /ui (opcional) y un thumbnail.png en /hero; (2) sumar un objeto aquí con: slug, title, industry, tags, featured, thumbnail, summary, services y assets (logos/palette/mockups/instagram/packaging/iconSet).
+// Para agregar un kit: (1) crear carpeta /public/projects/branding/<slug>/ con subcarpetas /hero, /brand, /instagram, /packaging o /merch (opcional), /ui (opcional) y un thumbnail.png en /hero; (2) sumar un objeto aquí con: slug, title, industry, tags, featured, thumbnail, summary, services y assets (logos/palette/moodboard/mockups/instagram/packaging/iconSet).
 // Estructura de assets (bajo /public/projects/branding/<slug>/):
 // - /hero: thumbnail.png (obligatorio), hero.png (opcional)
-// - /brand: logos, moodboards, icon sets, paletas
+// - /brand: logos, paletas (palette.png), moodboards (moodboard.png), icon sets
 // - /instagram: feeds o stories de Instagram
 // - /packaging o /merch: renders/mockups de packaging o merch
 // - /ui: piezas de UI si aplica
@@ -19,6 +19,7 @@ export type BrandingCategory = "Branding" | "UX/UI" | "Marketing" | "Frontend";
 type BrandingAssets = {
   logos?: string[];
   palette?: string[];
+  moodboard?: string[];
   mockups?: string[];
   instagram?: string[];
   packaging?: string[];
@@ -45,23 +46,75 @@ const brandingAsset = (slug: string, group: string, filename: string) =>
 function warnBrandingPlaceholders(item: BrandingItem): void {
   if (process.env.NODE_ENV !== "development") return;
   const placeholderPaths: string[] = [];
+  const suspectPaths: string[] = [];
   const pushIfPlaceholder = (field: string, value?: string | null) => {
     if (!value || typeof value !== "string") return;
     if (value.endsWith(".svg")) placeholderPaths.push(`${field}=${value}`);
   };
+  const pushIfSuspect = (field: string, value?: string | null) => {
+    if (!value || typeof value !== "string") return;
+    const trimmed = value.trim();
+    if (!trimmed) {
+      suspectPaths.push(`${field}=<empty>`);
+      return;
+    }
+    if (field === "instagram" && trimmed.includes("/social/")) {
+      suspectPaths.push(`${field}=${trimmed}`);
+    }
+    if (field === "palette" && trimmed.includes("/instagram/")) {
+      suspectPaths.push(`${field}=${trimmed}`);
+    }
+    if (field === "moodboard" && trimmed.includes("/instagram/")) {
+      suspectPaths.push(`${field}=${trimmed}`);
+    }
+  };
 
   pushIfPlaceholder("thumbnail", item.thumbnail);
+  pushIfSuspect("thumbnail", item.thumbnail);
   const assets = item.assets ?? {};
-  assets.logos?.forEach((v) => pushIfPlaceholder("logos", v));
-  assets.palette?.forEach((v) => pushIfPlaceholder("palette", v));
-  assets.mockups?.forEach((v) => pushIfPlaceholder("mockups", v));
-  assets.instagram?.forEach((v) => pushIfPlaceholder("instagram", v));
-  assets.packaging?.forEach((v) => pushIfPlaceholder("packaging", v));
-  if (assets.iconSet) pushIfPlaceholder("iconSet", assets.iconSet);
+  assets.logos?.forEach((v) => {
+    pushIfPlaceholder("logos", v);
+    pushIfSuspect("logos", v);
+  });
+  assets.palette?.forEach((v) => {
+    pushIfPlaceholder("palette", v);
+    pushIfSuspect("palette", v);
+  });
+  assets.moodboard?.forEach((v) => {
+    pushIfPlaceholder("moodboard", v);
+    pushIfSuspect("moodboard", v);
+  });
+  assets.mockups?.forEach((v) => {
+    pushIfPlaceholder("mockups", v);
+    pushIfSuspect("mockups", v);
+  });
+  assets.instagram?.forEach((v) => {
+    pushIfPlaceholder("instagram", v);
+    pushIfSuspect("instagram", v);
+  });
+  assets.packaging?.forEach((v) => {
+    pushIfPlaceholder("packaging", v);
+    pushIfSuspect("packaging", v);
+  });
+  if (assets.iconSet) {
+    pushIfPlaceholder("iconSet", assets.iconSet);
+    pushIfSuspect("iconSet", assets.iconSet);
+  }
+  if (!assets.palette || assets.palette.length === 0) {
+    suspectPaths.push("palette=<missing>");
+  }
+  if (assets.moodboard?.length === 0) {
+    suspectPaths.push("moodboard=<empty>");
+  }
 
   if (placeholderPaths.length > 0) {
     console.warn(
       `[branding-dev] Placeholder assets detected for ${item.slug}: ${placeholderPaths.join(", ")}`,
+    );
+  }
+  if (suspectPaths.length > 0) {
+    console.warn(
+      `[branding-dev] Suspect asset paths for ${item.slug}: ${suspectPaths.join(", ")}`,
     );
   }
 }
@@ -80,7 +133,8 @@ const rawBrandingLibrary: BrandingItem[] = [
     domain: "Cafe",
     assets: {
       logos: [brandingAsset("wave-cafe", "brand", "logo.png")],
-      palette: [brandingAsset("wave-cafe", "brand", "moodboard.png")],
+      palette: [brandingAsset("wave-cafe", "brand", "palette.png")],
+      moodboard: [brandingAsset("wave-cafe", "brand", "moodboard.png")],
       mockups: [
         brandingAsset("wave-cafe", "packaging", "packaging-1.png"),
         brandingAsset("wave-cafe", "packaging", "packaging-2.png"),
@@ -101,7 +155,8 @@ const rawBrandingLibrary: BrandingItem[] = [
     domain: "Fitness",
     assets: {
       logos: [brandingAsset("glow-fit-studio", "brand", "logo.png")],
-      palette: [brandingAsset("glow-fit-studio", "brand", "moodboard.png")],
+      palette: [brandingAsset("glow-fit-studio", "brand", "palette.png")],
+      moodboard: [brandingAsset("glow-fit-studio", "brand", "moodboard.png")],
       mockups: [
         brandingAsset("glow-fit-studio", "merch", "merch-1.png"),
         brandingAsset("glow-fit-studio", "merch", "merch-2.png"),
@@ -122,7 +177,8 @@ const rawBrandingLibrary: BrandingItem[] = [
     domain: "Ecommerce",
     assets: {
       logos: [brandingAsset("retro-shop", "brand", "logo.png")],
-      palette: [brandingAsset("retro-shop", "brand", "moodboard.png")],
+      palette: [brandingAsset("retro-shop", "brand", "palette.png")],
+      moodboard: [brandingAsset("retro-shop", "brand", "moodboard.png")],
       mockups: [
         brandingAsset("retro-shop", "packaging", "packaging-1.png"),
         brandingAsset("retro-shop", "packaging", "packaging-2.png"),
@@ -140,6 +196,7 @@ function ensureAssetsShape(item: BrandingItem): BrandingItem {
     assets: {
       logos: assets.logos ?? [],
       palette: assets.palette ?? [],
+      moodboard: assets.moodboard ?? [],
       mockups: assets.mockups ?? [],
       instagram: assets.instagram ?? [],
       packaging: assets.packaging ?? [],

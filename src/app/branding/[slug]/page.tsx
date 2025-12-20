@@ -46,7 +46,19 @@ export default async function BrandingDetailPage({
   if (!item) notFound();
 
   const logos = filterBrandingAssets(item.assets.logos);
-  const palette = filterBrandingAssets(item.assets.palette);
+  const paletteRaw = filterBrandingAssets(item.assets.palette);
+  const palette = paletteRaw.filter((p) => !p.includes("/instagram/"));
+  if (process.env.NODE_ENV === "development" && palette.length !== paletteRaw.length) {
+    console.warn(
+      `[branding-dev] Palette assets ignored because they point to /instagram: ${paletteRaw
+        .filter((p) => p.includes("/instagram/"))
+        .join(", ")}`,
+    );
+  }
+  if (process.env.NODE_ENV === "development" && palette.length === 0) {
+    console.warn(`[branding-dev] Palette is missing for ${item.slug}`);
+  }
+  const moodboard = filterBrandingAssets(item.assets.moodboard);
   const mockups = filterBrandingAssets(item.assets.mockups);
   const instagram = filterBrandingAssets(item.assets.instagram);
 
@@ -91,6 +103,7 @@ export default async function BrandingDetailPage({
 
         {logos.length > 0 ? <AssetSection title="Logos" images={logos} /> : null}
         {palette.length > 0 ? <AssetSection title="Paleta de color" images={palette} /> : null}
+        {moodboard.length > 0 ? <AssetSection title="Moodboard" images={moodboard} /> : null}
         {mockups.length > 0 ? <AssetSection title="Mockups" images={mockups} /> : null}
         {instagram.length > 0 ? (
           <AssetSection title="Instagram" images={instagram} dense />

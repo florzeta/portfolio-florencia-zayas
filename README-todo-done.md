@@ -13,4 +13,6 @@
 - [x] Metadata por página + JSON-LD (Persona y CreativeWork) y CTA de CV.
 - [x] Evitar `fs/path` en helpers de assets; validación de existencia eliminada para compatibilidad con bundle cliente.
 - [x] Branding: normalizar assets y fallbacks de Glow Fit Studio (merch/instagram).
+- [x] Branding: Retro Shop usa `instagram/instagram.png` y filtra placeholders/sin datos.
+- [x] Branding: separar `palette.png` vs `moodboard.png` y secciones dedicadas.
 

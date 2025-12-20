@@ -10,7 +10,8 @@
     "validate:assets": "node scripts/validate-assets.mjs",
     "check:assets": "node scripts/check-assets.mjs",
     "audit:wave-cafe-assets": "node tools/audit-wave-cafe-assets.mjs",
-    "repair:wave-cafe-assets": "node tools/repair-wave-cafe-assets.mjs"
+    "repair:wave-cafe-assets": "node tools/repair-wave-cafe-assets.mjs",
+    "check:branding-assets": "node tools/check-branding-assets.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
